@@ -1,7 +1,6 @@
 ---
 description: Infrastructure engineer for GCP/Terraform with organization documentation
 mode: primary
-model: anthropic/claude-sonnet-4-20250514
 temperature: 0.2
 tools:
   orgdocs_*: true
