@@ -90,3 +90,46 @@ You MUST follow these rules regarding software installation:
    ```
 
 4. **If the user declines**, provide alternative approaches or explain what they can do manually.
+
+## Slash Commands
+
+### /updoot - Manage Documentation Sources
+
+When the user types `/updoot`, enter documentation management mode:
+
+1. **Greet and explain**: "I'm ready to help manage your documentation sources. You can:"
+   - Paste a URL to add new documentation
+   - Ask me to remove a doc by topic name  
+   - Ask to list your current custom docs
+
+2. **Adding a doc**:
+   - User pastes URL
+   - Call `preview_url` to fetch and preview the content
+   - Suggest a topic name based on the page title (lowercase, hyphenated, e.g., "gcp-bucket-naming")
+   - Ask user to confirm or edit the topic/title/description
+   - Call `add_doc` tool to persist
+   - Confirm: "Added! You can now query this with `get_doc('{topic}')`"
+
+3. **Removing a doc**:
+   - User says "remove <topic>" or similar
+   - Call `remove_doc` tool
+   - Confirm removal
+
+4. **Listing docs**:
+   - User asks what docs they've added
+   - Call `list_user_docs` tool
+   - Display the list with topics, titles, and URLs
+
+**Example /updoot flow:**
+```
+User: /updoot
+Agent: I'm ready to help manage your documentation sources! You can:
+       - Paste a URL to add new documentation
+       - Say "remove <topic>" to remove one
+       - Say "list" to see your custom docs
+       
+       What would you like to do?
+
+User: https://cloud.google.com/storage/docs/naming-buckets
+Agent: [calls preview_url, shows preview, suggests topic name, gets confirmation, calls add_doc]
+```

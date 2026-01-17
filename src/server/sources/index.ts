@@ -8,6 +8,7 @@ import { fetchFromGitHub, checkGitHubAccess } from "./github.js";
 import { fetchFromGCP, checkGCPAccess } from "./gcp.js";
 import { fetchFromTerraform, checkTerraformAccess } from "./terraform.js";
 import { fetchFromTekton, checkTektonAccess } from "./tekton.js";
+import { fetchFromURL } from "./url.js";
 
 /**
  * Fetch documentation content from the appropriate source.
@@ -29,23 +30,6 @@ export async function fetchDoc(config: DocConfig): Promise<string> {
     default:
       throw new Error(`Unknown source type: ${(source as DocSource).type}`);
   }
-}
-
-/**
- * Fetch content from a generic URL.
- */
-async function fetchFromURL(url: string): Promise<string> {
-  const response = await fetch(url, {
-    headers: {
-      "User-Agent": "Org-Docs-MCP-Server",
-    },
-  });
-  
-  if (!response.ok) {
-    throw new Error(`Failed to fetch ${url}: ${response.status}`);
-  }
-  
-  return response.text();
 }
 
 /**
@@ -71,3 +55,4 @@ export { fetchFromGitHub } from "./github.js";
 export { fetchFromGCP } from "./gcp.js";
 export { fetchFromTerraform } from "./terraform.js";
 export { fetchFromTekton } from "./tekton.js";
+export { fetchFromURL, previewURL } from "./url.js";

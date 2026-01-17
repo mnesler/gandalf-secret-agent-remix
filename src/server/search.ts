@@ -2,13 +2,13 @@
  * Full-text search across all documentation.
  */
 
-import { DOC_SOURCES, type DocConfig } from "./config/doc-sources.js";
+import { getAllDocSources, type DocConfig } from "./config/doc-sources.js";
 import { fetchDoc } from "./sources/index.js";
 
 export interface SearchResult {
   topic: string;
   title: string;
-  category: "internal" | "public";
+  category: "internal" | "public" | "user";
   excerpt: string;
   score: number;
 }
@@ -22,7 +22,7 @@ export async function searchDocs(query: string, limit: number = 5): Promise<Sear
   const queryLower = query.toLowerCase();
   const queryTerms = queryLower.split(/\s+/).filter(Boolean);
   
-  for (const docConfig of DOC_SOURCES) {
+  for (const docConfig of getAllDocSources()) {
     try {
       const content = await fetchDoc(docConfig);
       const contentLower = content.toLowerCase();
@@ -77,6 +77,8 @@ function calculateScore(queryTerms: string[], content: string, config: DocConfig
   
   if (config.category === "internal") {
     score *= 1.2;
+  } else if (config.category === "user") {
+    score *= 1.1; // Slight boost for user-added docs
   }
   
   return score;

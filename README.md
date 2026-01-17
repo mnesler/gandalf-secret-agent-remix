@@ -14,6 +14,13 @@ When you ask the agent to create infrastructure (e.g., "create a GCS bucket for 
 2. Check public GCP/Terraform docs for resource specifications  
 3. Generate compliant Terraform code that follows all your organization's standards
 
+## Key Features
+
+- **Self-updating docs**: Use `/updoot` to add documentation sources through conversation
+- **Multi-source**: GitHub repos, public docs (GCP, Terraform, Tekton), and any URL
+- **Smart caching**: 5-minute TTL for fast responses
+- **Hot reload**: Changes to user docs are immediately available
+
 ## Quick Start
 
 ```bash
@@ -42,11 +49,29 @@ your-project/
 └── .env.example                 # GitHub token template
 ```
 
-## Customization
+## Adding Documentation Sources
 
-### 1. Add Your Documentation Sources
+### Option 1: Use `/updoot` (Recommended)
 
-Edit `src/server/config/doc-sources.ts` in this package (or fork it) to point to your organization's actual documentation:
+The easiest way to add documentation is through conversation:
+
+```
+User: /updoot
+Agent: I'm ready to help manage your documentation sources! You can:
+       - Paste a URL to add new documentation
+       - Say "remove <topic>" to remove one
+       - Say "list" to see your custom docs
+
+User: https://cloud.google.com/storage/docs/naming-buckets
+Agent: [previews the page and suggests topic name]
+       Added! You can now use get_doc('gcp-bucket-naming')
+```
+
+User docs are saved to `~/.config/gandalf/docs.json` and work across all projects.
+
+### Option 2: Edit Built-in Sources
+
+For organization-wide defaults, edit `src/server/config/doc-sources.ts` in this package (or fork it):
 
 ```typescript
 {
@@ -64,29 +89,28 @@ Edit `src/server/config/doc-sources.ts` in this package (or fork it) to point to
 },
 ```
 
-### 2. Customize the Agent Prompt
+### Option 3: Customize the Agent Prompt
 
 Edit `.opencode/agent/infra-engineer.md` in your project to match your organization's specific requirements.
 
+## Managing Documentation
+
+| Command | Purpose |
+|---------|---------|
+| `/updoot` | Add, remove, or list custom documentation sources |
+| `list_topics` | See all available documentation (built-in + user) |
+| `get_doc <topic>` | Fetch a specific document |
+| `search_docs <query>` | Search across all documentation |
+
 ## Documentation Sources
 
-### Internal (from GitHub)
+### Built-in Sources
 
-| Topic | Description |
-|-------|-------------|
-| `naming-standards` | Resource naming conventions |
-| `terraform-modules` | Internal Terraform module registry |
-| `security-policies` | Security and compliance requirements |
-| `team-codes` | Valid team abbreviations |
-
-### Public (fetched live)
-
-| Topic | Source |
-|-------|--------|
-| `gcp-storage-bucket` | cloud.google.com |
-| `gcp-iam` | cloud.google.com |
-| `terraform-gcs-bucket` | registry.terraform.io |
-| `tekton-pipelines` | tekton.dev |
+| Category | Examples | Source |
+|----------|----------|--------|
+| **Internal** | `naming-standards`, `terraform-modules`, `security-policies` | GitHub repos (YOUR_ORG/*) |
+| **Public** | `gcp-storage-bucket`, `terraform-gcs-bucket`, `tekton-pipelines` | Live docs (GCP, Terraform, Tekton) |
+| **User** | Added via `/updoot` | Any URL, saved to ~/.config/gandalf/docs.json |
 
 ## MCP Tools
 

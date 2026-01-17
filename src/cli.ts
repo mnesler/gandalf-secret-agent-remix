@@ -9,6 +9,7 @@
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import { join, dirname } from "path";
+import { homedir } from "os";
 import { startServer } from "./server/index.js";
 
 const PACKAGE_DIR = dirname(dirname(import.meta.path));
@@ -59,14 +60,21 @@ async function initCommand() {
   
   console.log("Initializing gandalf-secret-agent-remix...\n");
 
-  // 1. Create .opencode/agent directory
+  // 1. Ensure ~/.config/gandalf directory exists (for user docs)
+  const gandalfConfigDir = join(homedir(), ".config", "gandalf");
+  if (!existsSync(gandalfConfigDir)) {
+    mkdirSync(gandalfConfigDir, { recursive: true });
+    console.log("Created ~/.config/gandalf/");
+  }
+
+  // 3. Create .opencode/agent directory
   const agentDir = join(cwd, ".opencode", "agent");
   if (!existsSync(agentDir)) {
     mkdirSync(agentDir, { recursive: true });
     console.log("Created .opencode/agent/");
   }
 
-  // 2. Copy agent template
+  // 4. Copy agent template
   const agentTemplatePath = join(PACKAGE_DIR, "src", "templates", "agent.md");
   const agentDestPath = join(agentDir, "infra-engineer.md");
   
@@ -78,7 +86,7 @@ async function initCommand() {
     console.log("Created .opencode/agent/infra-engineer.md");
   }
 
-  // 3. Create or merge opencode.json
+  // 5. Create or merge opencode.json
   const opencodeJsonPath = join(cwd, "opencode.json");
   const mcpConfig = {
     orgdocs: {
@@ -118,7 +126,7 @@ async function initCommand() {
     console.log("Created opencode.json");
   }
 
-  // 4. Create .env.example if it doesn't exist
+  // 6. Create .env.example if it doesn't exist
   const envExamplePath = join(cwd, ".env.example");
   if (!existsSync(envExamplePath)) {
     writeFileSync(envExamplePath, "# GitHub token for accessing private documentation repos\nGITHUB_TOKEN=your_github_pat_here\n");
@@ -129,14 +137,17 @@ async function initCommand() {
 Setup complete!
 
 Next steps:
-1. Set your GitHub token:
-   export GITHUB_TOKEN=ghp_your_token_here
+1. Authenticate with GitHub:
+   gh auth login
+   (or set GITHUB_TOKEN=ghp_your_token_here)
 
-2. Customize documentation sources:
-   Edit src/server/config/doc-sources.ts to add your org's repos
-
-3. Start OpenCode and press Tab to switch to 'infra-engineer' agent:
+2. Start OpenCode and press Tab to switch to 'infra-engineer' agent:
    opencode
+
+3. Use /updoot to add your organization's documentation sources
+
+4. Customize built-in sources (optional):
+   Edit src/server/config/doc-sources.ts to add your org's repos
 `);
 }
 

@@ -46,7 +46,7 @@ export interface DocConfig {
   topic: string;
   title: string;
   description: string;
-  category: "internal" | "public";
+  category: "internal" | "public" | "user";
   source: DocSource;
   priority: number; // 0.0 to 1.0, higher = more important
 }
@@ -233,23 +233,40 @@ export const DOC_SOURCES: DocConfig[] = [
   },
 ];
 
+// Dynamic doc sources (built-in + user docs)
+let allDocSources: DocConfig[] = [...DOC_SOURCES];
+
+/**
+ * Update the merged doc sources list (called when user docs change)
+ */
+export function updateDocSources(userDocs: DocConfig[]): void {
+  allDocSources = [...DOC_SOURCES, ...userDocs];
+}
+
+/**
+ * Get all doc sources (built-in + user)
+ */
+export function getAllDocSources(): DocConfig[] {
+  return allDocSources;
+}
+
 /**
  * Get doc config by topic name
  */
 export function getDocConfig(topic: string): DocConfig | undefined {
-  return DOC_SOURCES.find((doc) => doc.topic === topic);
+  return allDocSources.find((doc) => doc.topic === topic);
 }
 
 /**
  * Get all doc configs for a category
  */
-export function getDocsByCategory(category: "internal" | "public"): DocConfig[] {
-  return DOC_SOURCES.filter((doc) => doc.category === category);
+export function getDocsByCategory(category: "internal" | "public" | "user"): DocConfig[] {
+  return allDocSources.filter((doc) => doc.category === category);
 }
 
 /**
  * Get all topics
  */
 export function getAllTopics(): string[] {
-  return DOC_SOURCES.map((doc) => doc.topic);
+  return allDocSources.map((doc) => doc.topic);
 }

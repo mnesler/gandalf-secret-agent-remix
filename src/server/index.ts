@@ -20,6 +20,8 @@ import {
 
 import { listResources, readResource, listResourceTemplates } from "./resources.js";
 import { listTools, callTool } from "./tools.js";
+import { initUserDocs, getUserDocsAsConfigs, onUserDocsChange } from "./config/user-docs.js";
+import { updateDocSources } from "./config/doc-sources.js";
 
 // Server metadata
 const SERVER_NAME = "org-docs";
@@ -105,6 +107,18 @@ function createServer(): Server {
  * Main entry point - starts the MCP server
  */
 export async function startServer() {
+  // Initialize user docs system
+  initUserDocs();
+  
+  // Update doc sources with user docs
+  updateDocSources(getUserDocsAsConfigs());
+  
+  // Watch for user docs changes and update doc sources
+  onUserDocsChange(() => {
+    updateDocSources(getUserDocsAsConfigs());
+    console.error(`[${SERVER_NAME}] User docs updated`);
+  });
+  
   const server = createServer();
   
   const transport = new StdioServerTransport();
