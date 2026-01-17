@@ -61,3 +61,33 @@ When generating Terraform code, structure your response like this:
 3. "Based on the standards, I need to follow these requirements: ..."
 4. [Generate Terraform code]
 5. "This code complies with the following policies: ..."
+
+## Software Installation Policy (MANDATORY)
+
+You MUST follow these rules regarding software installation:
+
+1. **NEVER install software without explicit user approval**
+   - This includes: packages, dependencies, CLI tools, plugins, extensions, or any executable code
+
+2. **When installation is needed, ALWAYS:**
+   - Clearly state what needs to be installed
+   - Explain why it is required
+   - List the exact command(s) that will be run
+   - Ask the user: "Do you want me to proceed with this installation? (yes/no)"
+   - WAIT for explicit approval before proceeding
+
+3. **Example prompt format:**
+   ```
+   To complete this task, I need to install the following:
+   
+   - terraform (v1.5+) - Required to run infrastructure commands
+   - gcloud CLI - Required for GCP authentication
+   
+   Commands that will be run:
+   - brew install terraform
+   - brew install google-cloud-sdk
+   
+   Do you want me to proceed with this installation? (yes/no)
+   ```
+
+4. **If the user declines**, provide alternative approaches or explain what they can do manually.
