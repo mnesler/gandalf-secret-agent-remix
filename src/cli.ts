@@ -41,14 +41,14 @@ function showHelp() {
 gandalf-secret-agent-remix - OpenCode MCP agent for infrastructure documentation
 
 Usage:
-  bunx gandalf-secret-agent-remix <command>
+  bunx github:mnesler/gandalf-secret-agent-remix <command>
 
 Commands:
   init    Initialize agent and MCP config in current project
   serve   Run the MCP server (used internally by OpenCode)
 
 Examples:
-  bunx gandalf-secret-agent-remix init
+  bunx github:mnesler/gandalf-secret-agent-remix init
   
 After init, start OpenCode and press Tab to switch to the infra-engineer agent.
 `);
@@ -83,7 +83,7 @@ async function initCommand() {
   const mcpConfig = {
     orgdocs: {
       type: "local",
-      command: ["bunx", "gandalf-secret-agent-remix", "serve"],
+      command: ["bunx", "github:mnesler/gandalf-secret-agent-remix", "serve"],
       enabled: true,
       environment: {
         GITHUB_TOKEN: "{env:GITHUB_TOKEN}"

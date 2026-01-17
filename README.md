@@ -18,7 +18,7 @@ When you ask the agent to create infrastructure (e.g., "create a GCS bucket for 
 
 ```bash
 # In your project directory
-bunx gandalf-secret-agent-remix init
+bunx github:mnesler/gandalf-secret-agent-remix init
 
 # Set your GitHub token (for private repo access)
 export GITHUB_TOKEN=ghp_your_token_here
