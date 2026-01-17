@@ -1,6 +1,6 @@
 {
   "name": "gandalf-secret-agent-remix",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "OpenCode MCP agent for infrastructure documentation - GCP, Terraform, Tekton with organization standards",
   "type": "module",
   "bin": {

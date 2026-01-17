@@ -20,14 +20,16 @@ When you ask the agent to create infrastructure (e.g., "create a GCS bucket for 
 # In your project directory
 bunx github:mnesler/gandalf-secret-agent-remix init
 
-# Set your GitHub token (for private repo access)
-export GITHUB_TOKEN=ghp_your_token_here
+# Authenticate with GitHub (if not already)
+gh auth login
 
 # Start OpenCode
 opencode
 
 # Press Tab to switch to 'infra-engineer' agent
 ```
+
+> **Note:** The MCP server uses `gh` CLI for GitHub authentication. If `gh` is not available, it falls back to the `GITHUB_TOKEN` environment variable.
 
 ## What `init` creates
 
@@ -100,7 +102,9 @@ The agent has access to these tools:
 
 - [Bun](https://bun.sh) runtime
 - [OpenCode](https://opencode.ai) CLI
-- GitHub token (for private repo access)
+- GitHub authentication (one of):
+  - [GitHub CLI](https://cli.github.com) (`gh auth login`) - **recommended**
+  - `GITHUB_TOKEN` environment variable
 
 ## Development
 
