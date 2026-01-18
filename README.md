@@ -2,6 +2,18 @@
 
 An [OpenCode](https://opencode.ai) MCP agent that provides AI assistants with access to your organization's infrastructure documentation, layered on top of public GCP, Terraform, and Tekton docs.
 
+## Prerequisites
+
+Before installing, ensure you have:
+
+| Requirement | Installation |
+|-------------|--------------|
+| **Bun** | `curl -fsSL https://bun.sh/install \| bash` |
+| **OpenCode** | `curl -fsSL https://opencode.ai/install \| bash` |
+| **GitHub CLI** | `brew install gh` or [cli.github.com](https://cli.github.com), then `gh auth login` |
+
+> **Note:** GitHub CLI is recommended for seamless authentication. If unavailable, set `GITHUB_TOKEN` environment variable instead.
+
 ## What it does
 
 This package provides:
@@ -121,14 +133,6 @@ The agent has access to these tools:
 | `list_topics` | List all available documentation |
 | `get_doc` | Fetch full content of a specific doc |
 | `search_docs` | Full-text search across all docs |
-
-## Requirements
-
-- [Bun](https://bun.sh) runtime
-- [OpenCode](https://opencode.ai) CLI
-- GitHub authentication (one of):
-  - [GitHub CLI](https://cli.github.com) (`gh auth login`) - **recommended**
-  - `GITHUB_TOKEN` environment variable
 
 ## Development
 
