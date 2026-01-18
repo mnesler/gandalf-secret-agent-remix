@@ -10,9 +10,9 @@ Before installing, ensure you have:
 |-------------|--------------|
 | **Bun** | `curl -fsSL https://bun.sh/install \| bash` |
 | **OpenCode** | `curl -fsSL https://opencode.ai/install \| bash` |
-| **GitHub CLI** | `brew install gh` or [cli.github.com](https://cli.github.com), then `gh auth login` |
+| **GitHub Copilot** | [Subscription required](https://github.com/features/copilot) for LLM access |
 
-> **Note:** GitHub CLI is recommended for seamless authentication. If unavailable, set `GITHUB_TOKEN` environment variable instead.
+> **Note:** If fetching docs from private GitHub repos, you'll also need [GitHub CLI](https://cli.github.com) (`gh auth login`) or a `GITHUB_TOKEN` environment variable.
 
 ## What it does
 
